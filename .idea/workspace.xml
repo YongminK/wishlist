@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d087a44f-fcbc-44b8-b0a6-762c6772bb8f" name="Default Changelist" comment="integrate">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/intergrate.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/node.js.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/npm-publish.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/_app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/api/hello.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/vercel.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/Home.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/globals.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/yarn.lock" beforeDir="false" />
+    <list default="true" id="d087a44f-fcbc-44b8-b0a6-762c6772bb8f" name="Default Changelist" comment="init test">
+      <change afterPath="$PROJECT_DIR$/components/Card.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/magic-wand.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wishlist/wishes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/components/date.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/components/layout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/components/layout.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/lib/posts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/pages/_app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/pages/api/hello.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/pages/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/pages/posts/[id].js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/posts/pre-rendering.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/posts/ssg-ssr.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/public/images/profile.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/styles/global.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs-blog/styles/utils.module.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,15 +51,19 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.16.2" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.19.12" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Yongmin\WebstormProjects\wishlist\public" />
+      <recent name="C:\Users\Yongmin\WebstormProjects\wishlist" />
+      <recent name="C:\Users\Yongmin\WebstormProjects\wishlist\nextjs-blog" />
       <recent name="C:\Users\Yongmin\WebstormProjects\wishlist\.github\workflows" />
       <recent name="C:\Users\Yongmin\WebstormProjects\wishlist\.github" />
-      <recent name="C:\Users\Yongmin\WebstormProjects\wishlist" />
     </key>
   </component>
   <component name="RunManager">
@@ -53,6 +74,7 @@
         <script value="dev" />
       </scripts>
       <node-interpreter value="project" />
+      <package-manager value="npm" />
       <envs />
       <method v="2" />
     </configuration>
@@ -70,7 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1609887355798</updated>
-      <workItem from="1609887356918" duration="1319000" />
+      <workItem from="1609887356918" duration="5879000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1609887806629</created>
@@ -86,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609888339133</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="init test">
+      <created>1609888845847</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1609888845847</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,6 +135,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="integrate" />
-    <option name="LAST_COMMIT_MESSAGE" value="integrate" />
+    <MESSAGE value="init test" />
+    <option name="LAST_COMMIT_MESSAGE" value="init test" />
   </component>
 </project>
