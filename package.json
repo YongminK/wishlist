@@ -1,15 +1,26 @@
 {
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.3.10",
     "autoprefixer": "^10.1.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "next": "^10.0.4",
-    "postcss": "^8.2.2",
+    "next-images": "^1.7.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "tailwindcss": "^2.0.2"
+    "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.1.1",
+    "react-perfect-scrollbar": "^1.5.8",
+    "sass": "^1.32.10"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
+  },
+  "devDependencies": {
+    "@material-ui/icons": "^4.11.2"
   }
 }
