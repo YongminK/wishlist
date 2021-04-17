@@ -77,10 +77,10 @@ const themesOptions = [
 				paper: colors.common.white
 			},
 			primary: {
-				main: colors.indigo[600]
+				main: colors.orange['A200']
 			},
 			secondary: {
-				main: colors.indigo[500]
+				main: colors.teal['300']
 			},
 			text: {
 				primary: colors.blueGrey[900],
