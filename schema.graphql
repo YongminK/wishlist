@@ -1,0 +1,636 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"An object with an ID"
+interface Node {
+    "The ID of the object."
+    id: ID!
+}
+
+"Union returning search of Wishlists, Items and Users"
+union Search = Item | User | Wishlist
+
+"Union returning Wishlists and Items of User"
+union UsersWishlistsAndItems = Item | Wishlist
+
+type AcceptFriendRequest {
+    message: String
+    ok: Boolean
+}
+
+type AddGroup {
+    ID: ID
+    message: String
+    ok: Boolean
+}
+
+type AddItem {
+    ID: ID
+    message: String
+    ok: Boolean
+}
+
+type AddItems {
+    message: String
+    ok: Boolean
+}
+
+"Add items in wishlist"
+type AddItemsToList {
+    message: String
+    ok: Boolean
+}
+
+"Add wishlist to user"
+type AddList {
+    ID: ID
+    message: String
+    ok: Boolean
+}
+
+type AddLists {
+    message: String
+    ok: Boolean
+}
+
+type AddOrganizer {
+    message: String
+    ok: Boolean
+}
+
+type AddPictures {
+    message: String
+    ok: Boolean
+}
+
+"Add GUESTS or FRIENDS to Group; for add ORGANIZATOR look at AddOrganizer"
+type AddUsers {
+    message: String
+    ok: Boolean
+}
+
+type CancelFriendRequest {
+    message: String
+    ok: Boolean
+}
+
+type ChangePassword {
+    message: String
+    ok: String
+}
+
+"Classic registration"
+type ClassicRegisterUser {
+    ID: ID
+    message: String
+    ok: Boolean
+}
+
+type DeleteGroup {
+    message: String
+    ok: Boolean
+}
+
+type DeleteItem {
+    message: String
+    ok: ID
+}
+
+"Delete items from wishlist and paste them to default wishlist"
+type DeleteItemsFromList {
+    message: String
+    ok: Boolean
+}
+
+"Delete wishlist with items or paste them in default wishlist"
+type DeleteWishList {
+    message: String
+    ok: Boolean
+}
+
+type EditGroup {
+    message: String
+    ok: Boolean
+}
+
+type EditItem {
+    message: String
+    ok: Boolean
+}
+
+"Edit wishlist"
+type EditList {
+    message: String
+    ok: Boolean
+}
+
+"Editing user info"
+type EditUser {
+    message: String
+    ok: Boolean
+}
+
+"Table of requests for friendship"
+type FriendRequests implements Node {
+    "The ID of the object."
+    id: ID!
+    requestFromUserInfo: User
+    requestToUserInfo: User
+}
+
+type FriendRequestsConnection {
+    "Contains the nodes in this connection."
+    edges: [FriendRequestsEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `FriendRequests` and its cursor."
+type FriendRequestsEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: FriendRequests
+}
+
+"Table for friendship"
+type FriendShip implements Node {
+    friendInfo: User
+    "The ID of the object."
+    id: ID!
+}
+
+type FriendShipConnection {
+    "Contains the nodes in this connection."
+    edges: [FriendShipEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `FriendShip` and its cursor."
+type FriendShipEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: FriendShip
+}
+
+"Table for GroupLists"
+type Group implements Node {
+    about: String
+    accessLevel: GroupAccessEnum!
+    adminId: Int
+    date: DateTime!
+    dateCreation: DateTime!
+    "The ID of the object."
+    id: ID!
+    items(after: String, before: String, first: Int, last: Int): ItemGroupConnection
+    lists(after: String, before: String, first: Int, last: Int): GroupListConnection
+    title: String!
+    users(after: String, before: String, first: Int, last: Int): GroupUserConnection
+}
+
+"Table for lists in groups"
+type GroupList implements Node {
+    group: Group
+    groupId: ID!
+    "The ID of the object."
+    id: ID!
+    lists: Wishlist
+    wishlistId: ID!
+}
+
+type GroupListConnection {
+    "Contains the nodes in this connection."
+    edges: [GroupListEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `GroupList` and its cursor."
+type GroupListEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: GroupList
+}
+
+"Table for users and their roles in groups"
+type GroupUser implements Node {
+    groupId: ID!
+    groups: Group
+    "The ID of the object."
+    id: ID!
+    roleInGroup: RoleEnum!
+    userId: ID!
+    users: User
+}
+
+type GroupUserConnection {
+    "Contains the nodes in this connection."
+    edges: [GroupUserEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `GroupUser` and its cursor."
+type GroupUserEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: GroupUser
+}
+
+"Table for items"
+type Item implements Node {
+    about: String
+    accessLevel: AccessLevelEnum!
+    dateCreation: DateTime!
+    dateForStatus: DateTime!
+    degree: DegreeEnum
+    giver: User
+    giverId: Int
+    "The ID of the object."
+    id: ID!
+    inGroups(after: String, before: String, first: Int, last: Int): ItemGroupConnection
+    inWishlist: Wishlist
+    listId: Int
+    owner: User
+    ownerId: Int
+    pictures(after: String, before: String, first: Int, last: Int): ItemPictureConnection
+    status: StatusEnum!
+    title: String!
+}
+
+type ItemConnection {
+    "Contains the nodes in this connection."
+    edges: [ItemEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `Item` and its cursor."
+type ItemEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: Item
+}
+
+"Table for items in groups"
+type ItemGroup implements Node {
+    group: Group
+    groupId: ID!
+    "The ID of the object."
+    id: ID!
+    item: Item
+    itemId: ID!
+}
+
+type ItemGroupConnection {
+    "Contains the nodes in this connection."
+    edges: [ItemGroupEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `ItemGroup` and its cursor."
+type ItemGroupEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: ItemGroup
+}
+
+type ItemPerformed {
+    message: String
+    ok: Boolean
+}
+
+"Table for picture's path of items"
+type ItemPicture implements Node {
+    "The ID of the object."
+    id: ID!
+    itemId: ID!
+    pathToPicture: String!
+}
+
+type ItemPictureConnection {
+    "Contains the nodes in this connection."
+    edges: [ItemPictureEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `ItemPicture` and its cursor."
+type ItemPictureEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: ItemPicture
+}
+
+"Authorization and returning token and refresh_token"
+type LoginUser {
+    message: String
+    ok: Boolean
+    refreshToken: String
+    token: String
+}
+
+type Mutation {
+    acceptFriendRequest(fromUserId: ID!): AcceptFriendRequest
+    addGroup(data: AddGroupInput!): AddGroup
+    addItem(data: ItemAddInput!): AddItem
+    addItemsToGroup(groupId: ID!, itemsId: [ID]): AddItems
+    "Add items in wishlist"
+    addItemsToList(itemsId: [ID], listId: ID): AddItemsToList
+    "Add wishlist to user"
+    addList(data: ListAddInput!): AddList
+    addListsToGroup(groupId: ID!, listsId: [ID]): AddLists
+    addOrganizer(groupId: ID!, userId: ID!): AddOrganizer
+    addPictures(files: [Upload], itemId: ID!): AddPictures
+    "Add GUESTS or FRIENDS to Group; for add ORGANIZATOR look at AddOrganizer"
+    addUsersToGroup(groupId: ID!, usersId: [ID]): AddUsers
+    "Authorization and returning token and refresh_token"
+    authorization(email: String!, password: String!): LoginUser
+    cancelFriendRequest(fromUserId: ID!, toUserId: ID!): CancelFriendRequest
+    changePassword(email: String!, newPassword: String!, oldPassword: String!): ChangePassword
+    "Classic registration"
+    classicRegister(userData: UserInputRegistration!): ClassicRegisterUser
+    deleteGroup(groupId: ID!): DeleteGroup
+    deleteItem(itemId: ID): DeleteItem
+    "Delete items from wishlist and paste them to default wishlist"
+    deleteItemsFromWishlist(itemsId: [ID], listId: ID): DeleteItemsFromList
+    "Delete wishlist with items or paste them in default wishlist"
+    deleteList(listId: ID, withItems: Boolean): DeleteWishList
+    editGroup(data: EditGroupInput!): EditGroup
+    editItem(data: ItemEditInput!): EditItem
+    "Edit wishlist"
+    editList(data: ListEditInput!): EditList
+    "Editing user info"
+    editUser(data: UserEditInput!): EditUser
+    itemPerformed(itemId: ID!): ItemPerformed
+    "Returning new access_token and refresh_token"
+    refreshTokens(refreshToken: String!, token: String!): RefreshToken
+    rejectFriendRequest(fromUserId: ID!): RejectFriendRequest
+    removeFromFriends(friendId: String!): RemoveFromFriends
+    removePictures(files: [Upload], itemId: ID!): AddPictures
+    resetPassword(email: String!): ResetPassword
+    "Send request for friendhsip"
+    sendFriendRequest(toUserId: ID!): SendFriendRequest
+    setGiverId(itemId: ID!): SetGiverId
+    uploadUserpic(userPic: Upload!): UploadUserPicture
+}
+
+"The Relay compliant `PageInfo` type, containing data necessary to paginate this connection."
+type PageInfo {
+    "When paginating forwards, the cursor to continue."
+    endCursor: String
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "When paginating backwards, the cursor to continue."
+    startCursor: String
+}
+
+type Query {
+    "Return group by ID"
+    group(groupId: ID!): Group
+    "All open items and wishlists of all users on this service"
+    index: [UsersWishlistsAndItems]
+    "Return item by ID"
+    item(itemId: ID!): Item
+    "Return yourself by ID from token"
+    me: User
+    "News from friends of user"
+    news: [UsersWishlistsAndItems]
+    "The ID of the object"
+    node(id: ID!): Node
+    "Search in nicknames, usernames and surnames of users and titles of items, wishlists and groups"
+    search(searchText: String!): [Search]
+    "Return user by ID"
+    user(userId: ID!): User
+    "Return wishlist by ID"
+    wishlist(listId: ID!): Wishlist
+}
+
+"Returning new access_token and refresh_token"
+type RefreshToken {
+    accessToken: String
+    message: String
+    ok: Boolean
+    refreshToken: String
+}
+
+type RejectFriendRequest {
+    message: String
+    ok: Boolean
+}
+
+type RemoveFromFriends {
+    message: String
+    ok: Boolean
+}
+
+type ResetPassword {
+    message: String
+    ok: Boolean
+}
+
+"Send request for friendhsip"
+type SendFriendRequest {
+    message: String
+    ok: Boolean
+}
+
+type SetGiverId {
+    message: String
+    ok: Boolean
+}
+
+type UploadUserPicture {
+    message: String
+    ok: Boolean
+}
+
+"Table of Users"
+type User implements Node {
+    about: String
+    birthday: String
+    friendRequests(after: String, before: String, first: Int, last: Int): FriendRequestsConnection
+    friends(after: String, before: String, first: Int, last: Int): FriendShipConnection
+    groups(after: String, before: String, first: Int, last: Int): GroupUserConnection
+    "The ID of the object."
+    id: ID!
+    itemsGiver(after: String, before: String, first: Int, last: Int): ItemConnection
+    itemsOwner(after: String, before: String, first: Int, last: Int): ItemConnection
+    lastSeen: DateTime
+    nickname: String
+    phoneNumber: String
+    surname: String
+    userLists(after: String, before: String, first: Int, last: Int): WishlistConnection
+    userName: String!
+    userpic: String
+}
+
+"Table of Wishlists"
+type Wishlist implements Node {
+    about: String
+    accessLevel: AccessLevelEnum!
+    "The ID of the object."
+    id: ID!
+    inGroups(after: String, before: String, first: Int, last: Int): GroupListConnection
+    items(after: String, before: String, first: Int, last: Int): ItemConnection
+    title: String!
+    userId: Int!
+    userOwner: User
+}
+
+type WishlistConnection {
+    "Contains the nodes in this connection."
+    edges: [WishlistEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `Wishlist` and its cursor."
+type WishlistEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: Wishlist
+}
+
+"An enumeration."
+enum AccessLevelEnum {
+    ALL
+    FRIENDS
+    NOBODY
+}
+
+"An enumeration."
+enum DegreeEnum {
+    NOTSTATED
+    NOTWANT
+    REALLYWANT
+    WANT
+}
+
+"An enumeration."
+enum GroupAccessEnum {
+    CLOSE
+    OPEN
+}
+
+"An enumeration."
+enum RoleEnum {
+    FRIENDS
+    GUEST
+    ORGANIZER
+}
+
+"An enumeration."
+enum StatusEnum {
+    FREE
+    PERFORMED
+    RESERVED
+}
+
+"Input for add group"
+input AddGroupInput {
+    about: String
+    accessLevel: GroupAccessEnum!
+    "The group model will depend on the role of the administrator"
+    adminRole: RoleEnum!
+    date: Date!
+    title: String!
+}
+
+"Input for editing group"
+input EditGroupInput {
+    about: String
+    accessLevel: GroupAccessEnum!
+    date: Date
+    groupId: ID
+    title: String
+}
+
+"Input for add item"
+input ItemAddInput {
+    about: String
+    accessLevel: AccessLevelEnum!
+    degree: DegreeEnum
+    listId: ID
+    title: String!
+}
+
+"Input for edit item"
+input ItemEditInput {
+    about: String
+    accessLevel: AccessLevelEnum!
+    degree: DegreeEnum
+    itemId: ID
+    listId: ID
+    title: String
+}
+
+"Input for add item"
+input ListAddInput {
+    about: String
+    accessLevel: AccessLevelEnum!
+    title: String!
+}
+
+"Input for edit item"
+input ListEditInput {
+    about: String
+    accessLevel: AccessLevelEnum!
+    listId: ID
+    title: String
+}
+
+"Input for edit user"
+input UserEditInput {
+    about: String
+    birthday: Date
+    email: String
+    nickname: String
+    phoneNumber: String
+    surname: String
+    userName: String
+}
+
+"Input for classic registration"
+input UserInputRegistration {
+    email: String!
+    nickname: String!
+    password: String!
+    userName: String!
+}
+
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+The `Date` scalar type represents a Date
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Date
+
+"""
+Create scalar that ignores normal serialization/deserialization, since
+that will be handled by the multipart request spec
+"""
+scalar Upload

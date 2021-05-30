@@ -4,7 +4,7 @@ const config = {
 		return config;
 	},
 	env: {
-        apiUrl: '',
+        apiUrl: 'http://3.68.29.204:8000/',
 	},
 };
 

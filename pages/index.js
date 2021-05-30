@@ -1,5 +1,6 @@
 import MainLayout from "../layouts/MainLayout/MainLayoyt";
 import MainPage from "views/main/MainPage";
+import {withApollo} from "config/apolloConfig";
 
 function HomePage() {
 	return (
@@ -9,4 +10,4 @@ function HomePage() {
 	)
 }
 
-export default HomePage
+export default withApollo()(HomePage)
