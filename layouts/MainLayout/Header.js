@@ -1,5 +1,5 @@
-import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {fade, makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,6 +14,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import {ExitToApp} from "@material-ui/icons";
+import SignInModal from "components/modal/SignInModal";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -83,6 +85,9 @@ export default function Header() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [openSignInModal, setOpenSignInModal] = useState(false);
+
+    const isSignIn = false
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -160,6 +165,8 @@ export default function Header() {
         </Menu>
     );
 
+    const renderSigninModal = <SignInModal open={openSignInModal} onClose={() =>setOpenSignInModal(false)}/>
+
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -192,24 +199,36 @@ export default function Header() {
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="secondary">
-                                <MailIcon />
+                                <MailIcon/>
                             </Badge>
                         </IconButton>
                         <IconButton aria-label="show 17 new notifications" color="inherit">
                             <Badge badgeContent={17} color="secondary">
-                                <NotificationsIcon />
+                                <NotificationsIcon/>
                             </Badge>
                         </IconButton>
-                        <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
+                        {isSignIn ? <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle/>
+                            </IconButton>
+                            :
+                            <IconButton
+                                edge="end"
+                                aria-label="sign in"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={() => setOpenSignInModal(true)}
+                                color="inherit"
+                            >
+                                <ExitToApp/>
+                            </IconButton>
+                        }
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
@@ -219,11 +238,12 @@ export default function Header() {
                             onClick={handleMobileMenuOpen}
                             color="inherit"
                         >
-                            <MoreIcon />
+                            <MoreIcon/>
                         </IconButton>
                     </div>
                 </Toolbar>
             </AppBar>
+            {renderSigninModal}
             {renderMobileMenu}
             {renderMenu}
         </div>
