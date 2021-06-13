@@ -4,6 +4,8 @@ import {useForm} from "react-hook-form";
 import {useMutation} from "@apollo/client";
 import {CLASSIC_REGISTER} from "graphql/auth/classicRegister";
 import ControlTextInput from "components/inputs/ControlTextInput";
+import {AUTHORIZATION} from "graphql/auth/authorization";
+import cookies from 'js-cookie'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -55,12 +57,28 @@ const useStyles = makeStyles(theme => ({
 const SignInModal = ({open, onClose}) => {
     const classes = useStyles()
     const [isSignIn, setIsSignIn] = useState(true)
-    const {control, handleSubmit, formState: {errors}} = useForm()
+    const {control, handleSubmit, setError, formState: {errors}} = useForm()
+    const [classicRegister] = useMutation(CLASSIC_REGISTER)
+    const [authorization] = useMutation(AUTHORIZATION)
 
     const onSubmit = (data) => {
         console.log(data)
         if (isSignIn) {
+            authorization({
+                variables: {
+                    email: data.email,
+                    password:data.password
+                }
+            }).then(res => {
+                console.log(res)
+                if(res.data.authorization.ok) {
+                    cookies.set('accessToken', res.data.authorization.token)
+                    cookies.set('refreshToken', res.data.authorization.refrechToken)
+                    window.location.reload()
+                    onClose()
+                }
 
+            })
         } else {
             classicRegister({
                 variables: {
@@ -69,11 +87,17 @@ const SignInModal = ({open, onClose}) => {
                     }
                 }
             }).then(res => {
+                if(res.data.classicRegister.ok) {
+                    onClose()
+                } else {
+                    setError('email', {message: res.data.classicRegister.message})
+                }
                 console.log(res)
                 onClose()
             })
         }
     }
+
 
     const SignIn = () => {
         return (
@@ -110,8 +134,6 @@ const SignInModal = ({open, onClose}) => {
             </div>
         )
     }
-
-    const [classicRegister] = useMutation(CLASSIC_REGISTER)
 
     return (
         <Modal open={open} onClose={onClose}>
