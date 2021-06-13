@@ -4,7 +4,7 @@ import {withApollo} from "config/apolloConfig";
 
 function HomePage() {
 	return (
-		<MainLayout title={"Главная"}>
+		<MainLayout title={"Главная"} padding={0}>
             <MainPage/>
 		</MainLayout>
 	)
