@@ -2,7 +2,7 @@ import {ApolloClient, ApolloLink, InMemoryCache, Observable} from '@apollo/clien
 import {onError} from "@apollo/client/link/error";
 import fetch from "node-fetch";
 import {withApollo as withApolloHOC} from "next-apollo";
-import {EXEC_NO_SSR_SKIP, getAccessToken, getExecType, getRefreshToken, removeCookies, setCookies} from "./execHelper";
+import {getAccessToken, getExecType, getRefreshToken, removeCookies, setCookies} from "./execHelper";
 import moment from "moment";
 import {BASE_GRAPHQL_URL} from "config";
 import {createUploadLink} from "apollo-upload-client";
@@ -23,6 +23,8 @@ const processQueue = async (error, token = null) => {
 
 
 const refreshAccessToken = async (execType, ctx) => {
+    const {refreshToken, token} = getRefreshToken()
+    console.log(refreshToken, token)
     const r = await fetch(BASE_GRAPHQL_URL, {
         method: 'POST',
         headers: {
@@ -31,12 +33,7 @@ const refreshAccessToken = async (execType, ctx) => {
             'Authorization': "JWT " + getAccessToken(execType, ctx),
         },
         body: JSON.stringify({
-            query: `mutation refreshTokens {refreshTokens(refreshToken: "${getRefreshToken(execType, ctx)}") {
-                                           ok
-                                           accessToken
-                                           refreshToken
-                                           message
-                                        }}`
+            query: `mutation refreshTokens {refreshTokens(refreshToken: ${refreshToken}, token: ${token}) {ok accessToken refreshToken message}}`
         })
     });
     return await r.json();
@@ -60,17 +57,17 @@ const createClient = (ctx) => {
                         ),
                     );
                 if (networkError) console.log(`[Network error]: ${networkError}`);
-                if (graphQLErrors.find(({message}) => message === "Unauthorized") && execType !== EXEC_NO_SSR_SKIP) {
+                if (graphQLErrors.find(({message}) => message === "Signature has expired. Authorize again or refresh access_token!")) {
                     console.log("glq error on", execType);
                     console.log("isRefreshing", isRefreshing);
                     return new Observable(async observer => {
-                            //Кладем запрос в очередь отклоненных запросов, там он будет ждать решения по обновлению токена
-                            new Promise((resolve, reject) => {
-                                failedRequestsQueue.push({resolve, reject});
-                            }).then(accessToken => {
-                                //Если все ок, то идем дальше, пуская вперед остальные запросы;
-                                const subscriber = {
-                                    next: observer.next.bind(observer),
+                        //Кладем запрос в очередь отклоненных запросов, там он будет ждать решения по обновлению токена
+                        new Promise((resolve, reject) => {
+                            failedRequestsQueue.push({resolve, reject});
+                        }).then(accessToken => {
+                            //Если все ок, то идем дальше, пуская вперед остальные запросы;
+                            const subscriber = {
+                                next: observer.next.bind(observer),
                                     error: observer.error.bind(observer),
                                     complete: observer.complete.bind(observer)
                                 };
@@ -87,8 +84,6 @@ const createClient = (ctx) => {
                                 console.log("isRefreshing", isRefreshing);
                                 try {
                                     console.log("before redirect");
-                                    //TODO: на бэкенде отключен рефреш, так что тут может падать
-                                    throw new Error("Refresh token on backend is not available");
                                     //Идем вручную на рефреш токена, ибо клиент Apollo испорчен старым токеном до момента обновления
                                     const data = await refreshAccessToken(execType, ctx);
 
