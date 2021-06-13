@@ -8,12 +8,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SignInModal from "components/modal/SignInModal";
-import {useQuery} from "@apollo/client";
-import {GET_ME} from "graphql/me/getMe";
 import MobileMenu from "layouts/MainLayout/components/MobileMenu";
 import DesktopMenu from "layouts/MainLayout/components/DesktopMenu"
 import cookies from 'js-cookie';
 import {useRouter} from "next/router";
+import {useQuery} from "@apollo/client";
+import {GET_ME} from "graphql/me/getMe";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ export default function Header() {
     const {loading, error, data} = useQuery(GET_ME)
 
     useEffect(() => {
-        if (!loading && !error && !!data?.me?.id)
+        if (!loading && !error && !!data?.me)
             setIsSignIn(data.me)
         else if (!loading && !error && !data) setIsSignIn(false)
     }, [data?.me, loading, error])
