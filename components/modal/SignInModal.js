@@ -73,7 +73,7 @@ const SignInModal = ({open, onClose}) => {
                 console.log(res)
                 if(res.data.authorization.ok) {
                     cookies.set('accessToken', res.data.authorization.token)
-                    cookies.set('refreshToken', res.data.authorization.refrechToken)
+                    cookies.set('refreshToken', res.data.authorization.refreshToken)
                     window.location.reload()
                     onClose()
                 }
