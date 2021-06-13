@@ -76,7 +76,7 @@ export default function Header() {
     const handleLogout = () => {
         cookies.remove('accessToken', {path: ''})
         cookies.remove('refreshToken', {path: ''})
-       router.push('/')
+        window.location.reload()
     }
 
     const handleMobileMenuOpen = (event) => {
