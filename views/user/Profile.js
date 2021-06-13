@@ -1,10 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import {Avatar, Box, Card, CardContent, colors, Grid, LinearProgress} from "@material-ui/core";
 import {useRouter} from "next/router";
 import {makeStyles} from "@material-ui/core/styles";
 import getInitials from "misc/func/getinitials";
 import formatDate from "misc/func/formatDate";
 import timeSince from "misc/func/timeSince";
+import {useQuery} from "@apollo/client";
+import {GET_USER} from "graphql/user/query/getUser";
+import {useAccess} from "hooks/useAccess";
+import {Edit} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import EditUserModal from "views/user/components/EditUserModal";
 
 const useStyles = makeStyles((theme) => ({
     progress: {
@@ -16,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('xs')]: {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start'
@@ -60,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         color: colors.grey[400],
         fontStyle: 'italic',
         marginLeft: theme.spacing(2),
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             marginLeft: 0,
             marginTop: theme.spacing(1)
         }
@@ -71,20 +77,19 @@ const UserProfile = () => {
     const classes = useStyles()
     const router = useRouter()
     const {id} = router.query;
-    // const {data, loading, error} = useQuery(GET_USER)
-    const loading = false, error = false, data = {
-        user: {
-            about: "Люблю собак, голубой, кофе. Аллергия на шоколад",
-            birthday: '1997-01-09',
-            userName: "test",
-            nickname: "test-nick",
-            lastSeen: '2021-06-13T12:15:00Z',
-            userpic: '/tea.jpg'
+    const [openModal, setOpenModal] = useState(false)
+    const {data, loading, error} = useQuery(GET_USER, {
+        variables: {
+            userId: id
         }
-    }
+    })
+
+    const {isCurrentUser, isLoaded} = useAccess();
+    const renderEditModal = <EditUserModal open={openModal} onClose={() => setOpenModal(false)} currentData={data?.user}/>
+
     return (
         <Box height={'100%'}>
-            {loading || error ?
+            {loading || error || !isLoaded  ?
                 <Box height={'100%'} display={"flex"} justifyContent={"center"} alignItems={"center"}>
                     <LinearProgress className={classes.progress}/>
                 </Box> :
@@ -99,13 +104,17 @@ const UserProfile = () => {
                                     </div>
                                     <div className={classes.container}>
                                         <div>
-                                            <p className={classes.nickname}>
+                                            <div className={classes.nickname}>
                                                 {data?.user?.nickname}
                                                 {data?.user?.birthday &&
                                                 <span>
                                                     {`${formatDate(data?.user?.birthday)} (${timeSince(data?.user?.birthday)})`}
                                                 </span>}
-                                            </p>
+                                                {isCurrentUser(data?.user.id) &&
+                                                <IconButton onClick={() => setOpenModal(true)}>
+                                                    <Edit/>
+                                                </IconButton>}
+                                            </div>
                                             <div>
                                                 {data?.user?.lastSeen &&
                                                 <p className={classes.lastSeen}>
@@ -131,6 +140,7 @@ const UserProfile = () => {
                             </CardContent>
                         </Card>
                     </Grid>
+                    {renderEditModal}
                 </Grid>}
         </Box>
     )
