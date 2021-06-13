@@ -7,7 +7,7 @@ const ControlTextInput = ({label, name, defaultValue = "", type = "text", contro
     return (
         <Controller
             render={({field}) => {
-                return <TextField {...field} variant={"outlined"} fullWidth label={label} type={type} error={errors && errors[name]} helperText={errors && errors[name] && helperText}/>
+                return <TextField {...field} {...rest} multiline={rest.multiline} rows={rest.rows} variant={"outlined"} fullWidth label={label} type={type} error={errors && errors[name]} helperText={errors && errors[name] && helperText}/>
             }}
             name={name}
             defaultValue={defaultValue}
