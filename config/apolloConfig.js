@@ -13,7 +13,6 @@ let failedRequestsQueue = [];
 const httpLink = createUploadLink({
     fetch,
     uri: BASE_GRAPHQL_URL,
-    credentials: 'include'
 });
 
 const processQueue = async (error, token = null) => {
