@@ -1,11 +1,12 @@
 import Header from "./Header";
+import Page from "components/Page";
 
-const MainLayout = ({children}) => {
+const MainLayout = ({children, title}) => {
 	return (
-		<div>
+		<Page title={title}>
 			<Header/>
 			{children}
-		</div>
+		</Page>
 
 	)
 }

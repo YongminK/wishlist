@@ -4,7 +4,7 @@ import {withApollo} from "config/apolloConfig";
 
 function HomePage() {
 	return (
-		<MainLayout>
+		<MainLayout title={"Главная"}>
             <MainPage/>
 		</MainLayout>
 	)
