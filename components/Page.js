@@ -1,7 +1,7 @@
 import React, {forwardRef, useCallback, useEffect} from 'react';
 import {Helmet} from 'react-helmet';
 import PropTypes from 'prop-types';
-import track from 'misc/analytics'
+import track from 'misc/func/analytics'
 import {useRouter} from "next/router";
 
 const Page = forwardRef(({
