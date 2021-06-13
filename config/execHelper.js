@@ -1,4 +1,4 @@
-import cookie, {serialize} from "cookie";
+import {serialize} from "cookie";
 import cookies from "js-cookie";
 
 export const EXEC_SSR = "ssr"; //рендеринг на сервере
@@ -11,17 +11,13 @@ export const getExecType = (ctx) => {
 
 export const getAccessToken = (execType, ctx) => {
     if (ctx?.accessToken) return ctx.accessToken;
-    if (execType === EXEC_SSR) {
-        return cookie.parse(ctx.req.headers?.cookie || "").accessToken
-    } else if (execType === EXEC_NO_SSR) {
-        return cookies.get('accessToken');
-    }
+    return cookies.get('accessToken')
 }
 
 export const getRefreshToken = () => {
     return {
-        refreshToken: cookie.get('refreshToken'),
-        token: cookie.get('token')
+        refreshToken: cookies.get('refreshToken'),
+        token: cookies.get('accessToken')
     }
 }
 
