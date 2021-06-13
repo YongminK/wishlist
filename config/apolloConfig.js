@@ -57,6 +57,7 @@ const createClient = (ctx) => {
                         ),
                     );
                 if (networkError) console.log(`[Network error]: ${networkError}`);
+                if (!graphQLErrors) return;
                 if (graphQLErrors.find(({message}) => message === "Signature has expired. Authorize again or refresh access_token!")) {
                     console.log("glq error on", execType);
                     console.log("isRefreshing", isRefreshing);
