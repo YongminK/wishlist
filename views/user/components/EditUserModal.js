@@ -1,10 +1,11 @@
-import React from "react";
-import {Button, Card, CardContent, Grid, Modal} from "@material-ui/core";
+import React, {useState} from "react";
+import {Button, Card, CardActions, CardContent, Grid, Modal} from "@material-ui/core";
 import ControlTextInput from "components/inputs/ControlTextInput";
 import {useForm} from "react-hook-form";
 import {useMutation} from "@apollo/client";
 import {EDIT_USER} from "graphql/user/mutation/editUser";
 import {makeStyles} from "@material-ui/core/styles";
+import {Alert} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,12 +21,30 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '100%',
         padding: theme.spacing(3)
     },
+    actions: {
+        display: 'flex',
+        justifyContent: "flex-end",
+        '& > buttons:first-of-type': {
+            marginRight: theme.spacing(1)
+        }
+    },
+    error: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        padding: "0 16px"
+    }
 }))
 
 const EditUserModal = ({currentData, open, onClose}) => {
     const classes = useStyles();
     const {control, handleSubmit} = useForm();
     const [editUser] = useMutation(EDIT_USER)
+    const [error, setError] = useState(undefined)
+
+    const handleClose = () => {
+        setError(undefined)
+        onClose()
+    }
 
     const onSubmit = (data) => {
         console.log(data)
@@ -34,14 +53,19 @@ const EditUserModal = ({currentData, open, onClose}) => {
                 data: {...data}
             }
         }).then(res => {
-            if (res.data.editUser.ok) onClose()
+            if (res.data.editUser.ok) handleClose()
+            else setError(res.data.editUser.message)
         })
     }
     return (
-        <Modal open={open} onClose={onClose}>
+        <Modal open={open} onClose={handleClose}>
             <Card className={classes.root}>
                 <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    {error &&
+                    <Alert severity={"error"} className={classes.error}>
+                        Возникла ошибка при отправке формы: {error}
+                    </Alert>}
+                    <form>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
                                 <ControlTextInput
@@ -59,16 +83,25 @@ const EditUserModal = ({currentData, open, onClose}) => {
                                     defaultValue={currentData?.surname}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} md={6}>
+                                <ControlTextInput
+                                    control={control}
+                                    label={"Никнейм"}
+                                    name={"nickname"}
+                                    defaultValue={currentData?.nickname}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
                                 <ControlTextInput
                                     control={control}
                                     type={"date"}
+                                    InputLabelProps={{shrink: true}}
                                     label={"Дата рождения"}
                                     name={"birthday"}
                                     defaultValue={currentData?.birthday}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} md={6}>
                                 <ControlTextInput
                                     control={control}
                                     label={"Номер телефона"}
@@ -76,21 +109,13 @@ const EditUserModal = ({currentData, open, onClose}) => {
                                     defaultValue={currentData?.phoneNumber}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} md={6}>
                                 <ControlTextInput
                                     control={control}
                                     type={"email"}
                                     label={'Email'}
                                     name={'email'}
                                     defaultValue={currentData?.email}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ControlTextInput
-                                    control={control}
-                                    label={"Никнейм"}
-                                    name={"nickname"}
-                                    defaultValue={currentData?.nickname}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -105,9 +130,13 @@ const EditUserModal = ({currentData, open, onClose}) => {
                                 />
                             </Grid>
                         </Grid>
-                        <Button type={"submit"} color={"secondary"}>Сохранить</Button>
                     </form>
                 </CardContent>
+                <CardActions className={classes.actions}>
+                    <Button onClick={handleClose}>Закрыть</Button>
+                    <Button variant={"contained"} onClick={handleSubmit(onSubmit)}
+                            color={"secondary"}>Сохранить</Button>
+                </CardActions>
             </Card>
         </Modal>
     )
