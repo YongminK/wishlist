@@ -122,7 +122,7 @@ const EditUserModal = ({currentData, open, onClose}) => {
                                 <ControlTextInput
                                     control={control}
                                     label={"О себе"}
-                                    placeholder={"Можете написать свои предпочтения в еде, цветах, аллергии, размер одежды и многое другое, что бы  вы хотели, было бы учтено"}
+                                    placeholder={"Можете написать свои предпочтения в еде, цветах, аллергии, размер одежды и многое другое, что бы вы хотели, было бы учтено"}
                                     name={"about"}
                                     multiline
                                     rows={4}
