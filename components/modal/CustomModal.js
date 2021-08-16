@@ -1,7 +1,7 @@
 import React from "react";
-import {CardActions, CardContent, CardHeader, Modal} from "@material-ui/core";
-import WishCard from "components/Card";
+import {Card, CardActions, CardContent, CardHeader, Modal} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import DefaultModalButtons from "components/modal/DefaultModalButtons";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,19 +23,19 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const CustomModal = ({open, onClose, header, buttons, content}) => {
+const CustomModal = ({open, onClose, header, buttons, content, onSubmit, submitText}) => {
     const classes = useStyles()
     return (
         <Modal open={open} onClose={onClose}>
-            <WishCard className={classes.root}>
+            <Card className={classes.root}>
                 {header && <CardHeader title={header}/>}
                 <CardContent>
                     {content}
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    {buttons}
+                    {buttons || <DefaultModalButtons {...{onClose, onSubmit, submitText}}/>}
                 </CardActions>
-            </WishCard>
+            </Card>
         </Modal>
     )
 }
