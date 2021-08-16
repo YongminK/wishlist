@@ -113,23 +113,27 @@ type DeleteWishList {
 }
 
 type EditGroup {
+    editedGroup: Group
     message: String
     ok: Boolean
 }
 
 type EditItem {
+    editedItem: Item
     message: String
     ok: Boolean
 }
 
 "Edit wishlist"
 type EditList {
+    editedList: Wishlist
     message: String
     ok: Boolean
 }
 
 "Editing user info"
 type EditUser {
+    editedPerson: User
     message: String
     ok: Boolean
 }
@@ -261,7 +265,7 @@ type Item implements Node {
     listId: Int
     owner: User
     ownerId: Int
-    pictures(after: String, before: String, first: Int, last: Int): ItemPictureConnection
+    pictures: [String]
     status: StatusEnum!
     title: String!
 }
@@ -309,29 +313,6 @@ type ItemGroupEdge {
 type ItemPerformed {
     message: String
     ok: Boolean
-}
-
-"Table for picture's path of items"
-type ItemPicture implements Node {
-    "The ID of the object."
-    id: ID!
-    itemId: ID!
-    pathToPicture: String!
-}
-
-type ItemPictureConnection {
-    "Contains the nodes in this connection."
-    edges: [ItemPictureEdge]!
-    "Pagination data for this connection."
-    pageInfo: PageInfo!
-}
-
-"A Relay edge containing a `ItemPicture` and its cursor."
-type ItemPictureEdge {
-    "A cursor for use in pagination"
-    cursor: String!
-    "The item at the end of the edge"
-    node: ItemPicture
 }
 
 "Authorization and returning token and refresh_token"
@@ -470,6 +451,7 @@ type User implements Node {
     id: ID!
     itemsGiver(after: String, before: String, first: Int, last: Int): ItemConnection
     itemsOwner(after: String, before: String, first: Int, last: Int): ItemConnection
+    itemsPerformed(after: String, before: String, first: Int, last: Int): ItemConnection
     lastSeen: DateTime
     nickname: String
     phoneNumber: String
