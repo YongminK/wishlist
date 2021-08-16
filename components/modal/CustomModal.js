@@ -1,6 +1,6 @@
 import React from "react";
 import {CardActions, CardContent, CardHeader, Modal} from "@material-ui/core";
-import Card from "components/Card";
+import WishCard from "components/Card";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,7 @@ const CustomModal = ({open, onClose, header, buttons, content}) => {
     const classes = useStyles()
     return (
         <Modal open={open} onClose={onClose}>
-            <Card className={classes.root}>
+            <WishCard className={classes.root}>
                 {header && <CardHeader title={header}/>}
                 <CardContent>
                     {content}
@@ -35,7 +35,7 @@ const CustomModal = ({open, onClose, header, buttons, content}) => {
                 <CardActions className={classes.actions}>
                     {buttons}
                 </CardActions>
-            </Card>
+            </WishCard>
         </Modal>
     )
 }
