@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {Card, CardContent, CardHeader, CardMedia, Tooltip} from "@material-ui/core";
@@ -12,6 +12,7 @@ import {Delete, Edit} from "@material-ui/icons";
 import { faGift} from '@fortawesome/free-solid-svg-icons'
 import {useMutation} from "@apollo/client";
 import {SET_GIVER_ID} from "graphql/setGiverId";
+import WantRange from "components/WantRange";
 const useStyles = makeStyles(theme => ({
     root: {
         maxWidth: 345,
@@ -49,6 +50,7 @@ const WishCard = ({wish, ...rest}) => {
 
     const isGiver = rest.myId === wish.giverId
     const isFree = wish.status === 'FREE'
+
     const myWishButtons = <>
         <IconButton aria-label="settings">
             <Edit />
@@ -57,7 +59,8 @@ const WishCard = ({wish, ...rest}) => {
             <Delete/>
         </IconButton>
     </>
-    const othersWishButtons = <Tooltip title={isGiver ? "Отменить бронирование подарка" :  isFree ? 'Забронировать подарок' : "Уже кто-то дарит"}>
+    const othersWishButtons = <Tooltip title={isGiver ? "Отменить бронирование подарка" :
+        isFree ? 'Забронировать подарок' : "Уже кто-то дарит"}>
         <IconButton disabled={!isFree && !isGiver} onClick={setGiver}>
             <FontAwesomeIcon icon={faGift} color={isGiver ? orange['A200'] :  isFree ? '' : orange[200]}/>
         </IconButton>
@@ -78,9 +81,11 @@ const WishCard = ({wish, ...rest}) => {
                 }
             </Carousel> : <CardMedia image={wish.pictures[0]} title={wish.title} className={classes.media}/>}
             <CardContent>
+                <WantRange degree={wish.degree}/>
                 <Typography variant="body2" color="textSecondary" component="p">
                     {wish.about}
                 </Typography>
+
             </CardContent>
 		</Card>
 	)
