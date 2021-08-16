@@ -4,7 +4,7 @@ const config = {
 		return config;
 	},
 	env: {
-        apiUrl: 'http://3.68.29.204:8000/',
+        apiUrl: 'https://api.wish-list.online:8000',
 	},
 };
 
