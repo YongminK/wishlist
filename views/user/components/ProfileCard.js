@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Avatar, Box, Card, CardContent, colors} from "@material-ui/core";
 import getInitials from "misc/func/getinitials";
 import formatDate from "misc/func/formatDate";
@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {Edit} from "@material-ui/icons";
 import {useAccess} from "hooks/useAccess";
 import {makeStyles} from "@material-ui/core/styles";
+import EditUserModal from "views/user/components/EditUserModal";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -67,9 +68,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProfileCard = ({userData, }) => {
+const ProfileCard = ({userData}) => {
     const classes = useStyles()
+    const [openEditUserModal, setOpenEditUserModal] = useState(false);
     const {isCurrentUser} = useAccess();
+    const onCloseEditUserModal = () => {
+        setOpenEditUserModal(false)
+    }
+    const renderEditUserModal = <EditUserModal currentData={userData} open={openEditUserModal} onClose={onCloseEditUserModal}/>
 
     return (
         <Card>
@@ -87,10 +93,14 @@ const ProfileCard = ({userData, }) => {
                                 <span>
                                                     {`${formatDate(userData?.birthday)} (${timeSince(userData?.birthday)})`}
                                                 </span>}
-                                {isCurrentUser(userData.id) &&
-                                <IconButton onClick={() => setOpenModal(true)}>
-                                    <Edit/>
-                                </IconButton>}
+                                {!isCurrentUser(userData?.id) &&
+                                    <>
+                                        <IconButton onClick={() => setOpenEditUserModal(true)}>
+                                            <Edit/>
+                                        </IconButton>
+                                        {renderEditUserModal}
+                                    </>
+                              }
                             </div>
                             <div>
                                 {userData?.lastSeen &&
@@ -103,7 +113,6 @@ const ProfileCard = ({userData, }) => {
                         <p className={classes.about}>
                             {userData.about}
                         </p>}
-
                     </div>
 
                 </Box>

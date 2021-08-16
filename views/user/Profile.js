@@ -5,7 +5,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useQuery} from "@apollo/client";
 import {GET_USER} from "graphql/user/query/getUser";
 import {useAccess} from "hooks/useAccess";
-import EditUserModal from "views/user/components/EditUserModal";
 import ProfileCard from "views/user/components/ProfileCard";
 import WishListCard from "views/user/components/WishListCard";
 
@@ -19,7 +18,6 @@ const UserProfile = () => {
     const classes = useStyles()
     const router = useRouter()
     const {id} = router.query;
-    const [openModal, setOpenModal] = useState(false)
     const {data, loading, error} = useQuery(GET_USER, {
         variables: {
             userId: id
@@ -27,7 +25,27 @@ const UserProfile = () => {
     })
 
     const {isLoaded} = useAccess();
-    const renderEditModal = <EditUserModal open={openModal} onClose={() => setOpenModal(false)} currentData={data?.user}/>
+
+
+    const itemsOwnerMock = {
+        pageInfo: {
+
+        },
+        edges: [
+            {
+                node: {
+                    id: 1,
+                    title: "Наушники",
+                    about: "Супер наушники  с супер звуком блюпуп",
+                    accessLevel: "FRIEND",
+                    status: 'FREE',
+                    dateCreation: '2021-08-09',
+                    degree: 'WANT',
+                    pictures: ['https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'],
+                    giverId: 2,
+                    inWishList: {
+                        id: 1,
+                        title: 'др',
 
     return (
         <Box height={'100%'}>
@@ -40,9 +58,8 @@ const UserProfile = () => {
                         <ProfileCard userData={data?.user}/>
                     </Grid>
                     <Grid xs={12} item>
-                       <WishListCard wishlist={data?.user?.itemsOwner}/>
+                       <WishListCard wishlist={data?.user?.itemsOwner || itemsOwnerMock}/>
                     </Grid>
-                    {openModal && renderEditModal}
                 </Grid>}
         </Box>
     )
