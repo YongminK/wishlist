@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Box, Grid, LinearProgress} from "@material-ui/core";
 import {useRouter} from "next/router";
 import {makeStyles} from "@material-ui/core/styles";
@@ -46,7 +46,29 @@ const UserProfile = () => {
                     inWishList: {
                         id: 1,
                         title: 'др',
+                    }
+                }
+            },
+            {
+                node: {
+                    id: 2,
+                    title: "Термос",
+                    about: "Супер наушники  с супер звуком блюпуп Супер наушники  с супер звуком блюпуп Супер наушники  с супер звуком блюпуп" ,
+                    accessLevel: "ALL",
+                    status: 'RESERVED',
+                    dateCreation: '2021-08-09',
+                    degree: 'REALLYWANT',
+                    pictures: ['https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'],
+                    giverId: 2,
+                    inWishList: {
+                        id: 1,
+                        title: 'др',
 
+                    }
+                }
+            }
+        ]
+    }
     return (
         <Box height={'100%'}>
             {loading || error || !isLoaded  ?
