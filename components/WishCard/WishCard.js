@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
-import {Card, CardContent, CardHeader, CardMedia, Tooltip} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, CardMedia, Tooltip} from "@material-ui/core";
 import Carousel from "react-material-ui-carousel";
 import { red, orange } from '@material-ui/core/colors';
 import moment from "moment";
@@ -12,7 +12,8 @@ import {Delete, Edit} from "@material-ui/icons";
 import { faGift} from '@fortawesome/free-solid-svg-icons'
 import {useMutation} from "@apollo/client";
 import {SET_GIVER_ID} from "graphql/setGiverId";
-import WantRange from "components/WantRange";
+import WantRange from "components/WishCard/WantRange";
+import WishEditModal from "components/WishCard/WishEditModal";
 const useStyles = makeStyles(theme => ({
     root: {
         maxWidth: 345,
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 const WishCard = ({wish, ...rest}) => {
     const classes = useStyles()
     const [setGiverId] = useMutation(SET_GIVER_ID)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const setGiver = () => {
         setGiverId({
@@ -51,8 +53,10 @@ const WishCard = ({wish, ...rest}) => {
     const isGiver = rest.myId === wish.giverId
     const isFree = wish.status === 'FREE'
 
+    const renderWishEditModal = <WishEditModal onClose={() => setIsEditModalOpen(false)} open={isEditModalOpen}/>
+
     const myWishButtons = <>
-        <IconButton aria-label="settings">
+        <IconButton aria-label="settings" onClick={() => setIsEditModalOpen(true)}>
             <Edit />
         </IconButton>
         <IconButton>
@@ -81,12 +85,15 @@ const WishCard = ({wish, ...rest}) => {
                 }
             </Carousel> : <CardMedia image={wish.pictures[0]} title={wish.title} className={classes.media}/>}
             <CardContent>
-                <WantRange degree={wish.degree}/>
+                <Box ml={-2}>
+                    <WantRange degree={wish.degree}/>
+                </Box>
                 <Typography variant="body2" color="textSecondary" component="p">
                     {wish.about}
                 </Typography>
 
             </CardContent>
+            {isEditModalOpen && renderWishEditModal}
 		</Card>
 	)
 }
