@@ -71,7 +71,7 @@ const UserProfile = () => {
     }
     return (
         <Box height={'100%'}>
-            {loading || error || !isLoaded  ?
+            {loading || !error || isLoaded  ?
                 <Box height={'100%'} display={"flex"} justifyContent={"center"} alignItems={"center"}>
                     <LinearProgress className={classes.progress}/>
                 </Box> :

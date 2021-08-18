@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     actions: {
         display: 'flex',
         justifyContent: "flex-end"
+    },
+    header: {
+        paddingBottom: 0
     }
 }))
 
@@ -28,7 +31,7 @@ const CustomModal = ({open, onClose, header, buttons, content, onSubmit, submitT
     return (
         <Modal open={open} onClose={onClose}>
             <Card className={classes.root}>
-                {header && <CardHeader title={header}/>}
+                {header && <CardHeader classes={{root: classes.header}} title={header}/>}
                 <CardContent>
                     {content}
                 </CardContent>
