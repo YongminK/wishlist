@@ -70,7 +70,7 @@ export default function Header() {
     const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
-        router.push('/user?id=' + isSignIn.id)
+        router.push('/user?id=' + window.atob(isSignIn.id).split(':')[1])
     };
 
     const handleLogout = () => {
