@@ -7,13 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import SignInModal from "components/modal/SignInModal";
+import SignInModal from "components/AuthModal/SignInModal";
 import MobileMenu from "layouts/MainLayout/components/MobileMenu";
 import DesktopMenu from "layouts/MainLayout/components/DesktopMenu"
 import cookies from 'js-cookie';
 import {useRouter} from "next/router";
 import {useQuery} from "@apollo/client";
 import {GET_ME} from "graphql/me/getMe";
+import getIDfromBase64 from "misc/func/getIDfromBase64";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +71,7 @@ export default function Header() {
     const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
-        router.push('/user?id=' + window.atob(isSignIn.id).split(':')[1])
+        router.push('/user?id=' + getIDfromBase64(isSignIn.id))
     };
 
     const handleLogout = () => {
