@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import {useQuery} from "@apollo/client";
 import {GET_ME} from "graphql/me/getMe";
 import {useRouter} from "next/router";
+import getIDfromBase64 from "misc/func/getIDfromBase64";
 
 export const useAccess = () => {
     const [myId, setMyId] = useState('')
@@ -14,12 +15,10 @@ export const useAccess = () => {
     const define = (values, id) => {
         setMyId(id)
         if (router.route === '/user')
-            setIsMe(query?.id === id)
+            setIsMe(query?.id === getIDfromBase64(id))
         setIsLoaded(true)
     }
-
-    const isCurrentUser = (id) => myId === id
-
+    
     useEffect(() => {
         if (data?.me) {
             // console.log(data?.me)
@@ -27,7 +26,7 @@ export const useAccess = () => {
         }
     }, [data])
 
-    return {isLoaded, isCurrentUser, define, myId, isMe}
+    return {isLoaded, define, myId, isMe}
 }
 
 export const Show = ({show, children, text = "Нет доступа", style = {fontSize: 20, textAlign: "center"}}) => {
