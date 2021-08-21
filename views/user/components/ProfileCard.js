@@ -1,28 +1,23 @@
 import React, {useState} from "react";
-import {Avatar, Box, Card, CardContent, colors} from "@material-ui/core";
+import {Avatar, Box, Card, CardContent, colors, Tooltip} from "@material-ui/core";
 import getInitials from "misc/func/getinitials";
 import formatDate from "misc/func/formatDate";
 import timeSince from "misc/func/timeSince";
 import IconButton from "@material-ui/core/IconButton";
-import {Edit} from "@material-ui/icons";
+import {Edit, PersonAdd} from "@material-ui/icons";
 import {useAccess} from "hooks/useAccess";
 import {makeStyles} from "@material-ui/core/styles";
 import EditUserModal from "views/user/components/EditUserModal";
+import {useMutation, useQuery} from "@apollo/client";
+import {GET_USER} from "graphql/user/query/getUser";
+import {useRouter} from "next/router";
+import {SEND_FRIEND_REQUEST} from "graphql/user/mutation/sendFriendRequest";
+import {Skeleton} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
 
     container: {
         width: '100%',
-        '& > div': {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            [theme.breakpoints.down('xs')]: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start'
-            }
-        }
     },
     avatar: {
         width: 100,
@@ -68,50 +63,80 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProfileCard = ({userData}) => {
+const ProfileCard = () => {
     const classes = useStyles()
+    const router = useRouter()
+    const {id} = router.query;
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
-    const {isCurrentUser} = useAccess();
+    const {isMe, isLoaded} = useAccess();
+
+    const {data, loading, error} = useQuery(GET_USER, {
+        variables: {
+            userId: id
+        }
+    })
+
     const onCloseEditUserModal = () => {
         setOpenEditUserModal(false)
     }
-    const renderEditUserModal = <EditUserModal currentData={userData} open={openEditUserModal} onClose={onCloseEditUserModal}/>
 
+    const renderEditUserModal = <EditUserModal currentData={data?.user} open={openEditUserModal} onClose={onCloseEditUserModal}/>
+    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST)
+
+    const onSendFriendRequest = () => {
+        sendFriendRequest({
+            variables: {
+                toUserId: data?.user?.id
+            }
+        })
+    }
     return (
         <Card>
             <CardContent>
                 <Box display={'flex'} width={'100%'}>
-                    <div className={classes.avatar}>
-                        {userData?.userpic ? <img src={userData?.userpic}/> :
-                            <Avatar>{getInitials(userData?.userName || '')}</Avatar>}
-                    </div>
+                    {loading || error ? <Skeleton variant={"circle"} height={100} width={113}/> : <div className={classes.avatar}>
+                        {data?.user?.userpic ? <img src={data?.user?.userpic}/> :
+                            <Avatar>{getInitials(data?.user?.userName || '')}</Avatar>}
+                    </div>}
                     <div className={classes.container}>
                         <div>
                             <div className={classes.nickname}>
-                                {userData?.nickname}
-                                {userData?.birthday &&
-                                <span>
-                                                    {`${formatDate(userData?.birthday)} (${timeSince(userData?.birthday)})`}
-                                                </span>}
-                                {!isCurrentUser(userData?.id) &&
+                                {loading || error ? <Skeleton width={100} height={30}/> : data?.user?.nickname}
+                                {loading || error ? <Skeleton width={100} height={30}/> : data?.user?.birthday &&
+                                <span>{`${formatDate(data?.user?.birthday)} (${timeSince(data?.user?.birthday)})`}</span>}
+                                {!isLoaded || loading || error ? <Skeleton width={33} height={30} variant={"circle"}/> :
+                                    isMe ?
                                     <>
-                                        <IconButton onClick={() => setOpenEditUserModal(true)}>
-                                            <Edit/>
-                                        </IconButton>
+                                        <Tooltip title={"Редактировать профиль"}>
+                                            <IconButton onClick={() => setOpenEditUserModal(true)}>
+                                                <Edit/>
+                                            </IconButton>
+                                        </Tooltip>
                                         {renderEditUserModal}
-                                    </>
+                                    </> :
+                                    <Tooltip title={"Добавить в друзья"} onClick={onSendFriendRequest}>
+                                        <IconButton>
+                                            <PersonAdd/>
+                                        </IconButton>
+                                    </Tooltip>
                               }
                             </div>
                             <div>
-                                {userData?.lastSeen &&
+                                {data?.user?.lastSeen &&
                                 <p className={classes.lastSeen}>
-                                    Был онлайн: {formatDate(userData.lastSeen, 'DD.MM.YYYY HH:mm')}
+                                    Был онлайн: {formatDate(data?.user.lastSeen, 'DD.MM.YYYY HH:mm')}
                                 </p>}
                             </div>
                         </div>
-                        {userData?.about &&
+                        {loading || error ?
+                            <Box display={"flex"} maxWidth={400} flexWrap={'wrap'} ml={2} justifyContent={'space-between'} mt={1}>
+                                <Skeleton width={50}/> <Skeleton width={200}/>
+                                <Skeleton width={80}/> <Skeleton width={20}/> <Skeleton width={60}/>
+                                <Skeleton width={50}/> <Skeleton width={200}/><Skeleton width={80}/>
+                            </Box> :
+                            data?.user?.about &&
                         <p className={classes.about}>
-                            {userData.about}
+                            {data?.user.about}
                         </p>}
                     </div>
 
