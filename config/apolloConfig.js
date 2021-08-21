@@ -33,7 +33,7 @@ const refreshAccessToken = async (execType, ctx) => {
             'Authorization': "JWT " + getAccessToken(execType, ctx),
         },
         body: JSON.stringify({
-            query: `mutation refreshTokens {refreshTokens(refreshToken: ${refreshToken}, token: ${token}) {ok accessToken refreshToken message}}`
+            query: `mutation refreshTokens {refreshTokens(refreshToken: "${refreshToken}", token: "${token}") {ok accessToken refreshToken message}}`
         })
     });
     return await r.json();
