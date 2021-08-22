@@ -14,6 +14,8 @@ import {useMutation} from "@apollo/client";
 import {SET_GIVER_ID} from "graphql/wish/setGiverId";
 import WantRange from "components/WishCard/WantRange";
 import WishEditModal from "components/WishCard/WishEditModal";
+import {EDIT_ITEM} from "graphql/wish/editItem";
+import getIDfromBase64 from "misc/func/getIDfromBase64";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -53,8 +55,26 @@ const WishCard = ({wish, isPerformed = false, ...rest}) => {
 
     const isGiver = rest.myId === wish.giverId
     const isFree = wish.status === 'FREE'
+    const [editItem] = useMutation(EDIT_ITEM)
 
-    const renderWishEditModal = <WishEditModal onClose={() => setIsEditModalOpen(false)} open={isEditModalOpen}/>
+    const onEdit = (data) => {
+        editItem({
+            variables: {
+                about: data.about,
+                accessLevel: data.accessLevel,
+                degree: data.degree,
+                itemId: getIDfromBase64(wish.id),
+                listId: data.list === 'none' ? undefined : data.list,
+                title: data.title
+            }
+        }).then(() => {
+            rest.refetch()
+            setIsEditModalOpen(false)
+        })
+    }
+
+    const renderWishEditModal = <WishEditModal onClose={() => setIsEditModalOpen(false)} open={isEditModalOpen}
+                                               onSubmit={onEdit}/>
 
     const myWishButtons = <>
         <Tooltip title={"Редактировать"}>

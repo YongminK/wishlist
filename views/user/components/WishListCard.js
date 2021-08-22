@@ -71,7 +71,7 @@ const WishListCard = () => {
                     {
                         data?.user?.itemsOwner?.edges.map((wish, key) => (
                             <Grid key={`wish-${key}`} item xs={12} md={4}>
-                                <WishCard wish={wish.node} {...{isMe, myId}}/>
+                                <WishCard wish={wish.node} {...{isMe, myId, refetch}}/>
                             </Grid>
                         ))
                     }
