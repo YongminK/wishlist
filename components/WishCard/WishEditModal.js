@@ -5,14 +5,20 @@ import ControlTextInput from "components/inputs/ControlTextInput";
 import {useForm} from "react-hook-form";
 import WantRange from "components/WishCard/WantRange";
 import ControlSelect from "components/inputs/ControlSelect";
+import {useMutation} from "@apollo/client";
+import {ADD_LIST} from "graphql/list/addList";
 
 
 const WishEditModal = ({onClose, open, onSubmit}) => {
 	const {handleSubmit, control, formState: {errors}, setValue} = useForm()
 	const [degreeState, setDegreeState] = useState('NOTSTATED')
+
 	useEffect(() => {
 		setValue('degree', degreeState)
 	}, [degreeState])
+
+    const [addList] = useMutation(ADD_LIST)
+
 	const content =
 		<form>
 			<Grid container spacing={2}>
@@ -51,6 +57,7 @@ const WishEditModal = ({onClose, open, onSubmit}) => {
 
 				</Grid>
 				<Grid item xs={12}>
+                    {/*TODO заменить на autocomplete с freeSolo, где если введен список, которого нет, то запускается мутация на добавление*/}
 					<ControlSelect
 						id="list"
 						control={control}
@@ -62,6 +69,9 @@ const WishEditModal = ({onClose, open, onSubmit}) => {
 						}
 					/>
 				</Grid>
+                <Grid item xs={12}>
+                    {/*TODO Dropzone*/}
+                </Grid>
 			</Grid>
 		</form>
 
