@@ -1,7 +1,7 @@
 import {gql} from "@apollo/client";
 
 export const GET_USER_WISHES = gql `
-    query getUser($userId : ID!) {
+    query getUserWishes($userId : ID!) {
         user(userId: $userId) {
             itemsOwner {
                 pageInfo {
