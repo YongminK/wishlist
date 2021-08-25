@@ -11,7 +11,9 @@ export const useAccess = () => {
     const router = useRouter()
     const {query} = router
 
-    const {data} = useQuery(GET_ME);
+    const {data} = useQuery(GET_ME, {
+        fetchPolicy: "cache-first"
+    });
     const define = (values, id) => {
         setMyId(id)
         if (router.route === '/user')
