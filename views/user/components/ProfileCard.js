@@ -55,10 +55,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 14,
         color: colors.grey[400],
         fontStyle: 'italic',
-        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(1),
         [theme.breakpoints.down('xs')]: {
             marginLeft: 0,
-            marginTop: theme.spacing(1)
         }
     }
 }))
