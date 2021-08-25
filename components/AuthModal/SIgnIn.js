@@ -5,7 +5,7 @@ import cookies from "js-cookie";
 import {useMutation} from "@apollo/client";
 import {AUTHORIZATION} from "graphql/auth/authorization";
 
-const SignIn = ({classes, onClose, setIsSignIn, control, handleSubmit, errors}) => {
+const SignIn = ({classes, onClose, setIsSignIn, control, handleSubmit, errors, refetchGetMe}) => {
     const [authorization] = useMutation(AUTHORIZATION)
 
     const onSubmit = (data) => {
@@ -15,11 +15,10 @@ const SignIn = ({classes, onClose, setIsSignIn, control, handleSubmit, errors}) 
                     password:data.password
                 }
             }).then(res => {
-                console.log(res)
                 if(res.data.authorization.ok) {
                     cookies.set('accessToken', res.data.authorization.token)
                     cookies.set('refreshToken', res.data.authorization.refreshToken)
-                    window.location.reload()
+                    refetchGetMe()
                     onClose()
                 }
             })

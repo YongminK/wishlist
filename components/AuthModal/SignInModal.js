@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const SignInModal = ({open, onClose}) => {
+const SignInModal = ({open, onClose, refetchGetMe}) => {
     const classes = useStyles()
     const [isSignIn, setIsSignIn] = useState('auth')
     const {control, handleSubmit, setError, formState: {errors}} = useForm()
@@ -69,7 +69,7 @@ const SignInModal = ({open, onClose}) => {
                     </IconButton>
                 </Box>
                 {
-                    isSignIn === 'auth' ? <SignIn {...{classes, onClose, setIsSignIn, control, handleSubmit, errors}}/> :
+                    isSignIn === 'auth' ? <SignIn {...{classes, onClose, setIsSignIn, control, handleSubmit, errors, refetchGetMe}}/> :
                         isSignIn === 'register' ? <RegisterForm {...{classes, handleSubmit, control, errors, setIsSignIn, onClose, setError}}/> :
                             isSignIn === 'reset' && <ResetPasswordForm {...{control, errors, handleSubmit, classes, setIsSignIn, onClose}}/>
                 }
