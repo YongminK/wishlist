@@ -3,7 +3,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import {ExitToApp} from "@material-ui/icons";
@@ -41,19 +40,10 @@ const MobileMenu = ({
             onClose={handleMobileMenuClose}
         >
             {!loading && !error && isSignIn &&
-            <>
                 <MenuItem>
-                    <IconButton aria-label="show 4 new mails" color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <MailIcon/>
-                        </Badge>
-                    </IconButton>
-                    <p>Сообщения</p>
-                </MenuItem>
-                <MenuItem>
-                    <IconButton aria-label="show 11 new notifications" color="inherit">
-                        {isSignIn?.friendRequests?.length ?
-                            <Badge badgeContent={isSignIn?.friendRequests?.length} color="secondary">
+                    <IconButton color="inherit">
+                        {isSignIn?.friendRequests?.edges?.length ?
+                            <Badge badgeContent={isSignIn?.friendRequests?.edges?.length} color="secondary">
                                 <NotificationsIcon/>
                             </Badge>
                             :
@@ -61,7 +51,6 @@ const MobileMenu = ({
                     </IconButton>
                     <p>Запросы на добавления в друзья</p>
                 </MenuItem>
-            </>
             }
             {
                 !loading && !error && isSignIn ? <MenuItem onClick={handleProfileMenuOpen}>

@@ -50,7 +50,7 @@ export default function Header() {
 
     const [isSignIn, setIsSignIn] = useState(false)
 
-    const {loading, error, data} = useQuery(GET_ME)
+    const {loading, error, data,refetch: refetchGetMe} = useQuery(GET_ME)
 
     useEffect(() => {
         if (!loading && !error && !!data?.me)
@@ -100,7 +100,7 @@ export default function Header() {
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
 
-    const renderSigninModal = <SignInModal open={openSignInModal} onClose={() =>setOpenSignInModal(false)}/>
+    const renderSigninModal = <SignInModal open={openSignInModal} onClose={() =>setOpenSignInModal(false)} {...{refetchGetMe}}/>
 
     return (
         <div className={classes.grow}>

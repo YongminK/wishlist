@@ -1,11 +1,8 @@
 import {gql} from "@apollo/client";
 
-export const GET_ME = gql `
-    query getMe {
+export const GET_FRIEND_REQUESTS = gql`
+    query getFriendRequests {
         me {
-            id
-            userName
-            userpic
             friendRequests {
                 #    "Contains the nodes in this connection."
                 edges{
