@@ -47,8 +47,8 @@ type AddItemsToList {
 
 "Add wishlist to user"
 type AddList {
-    ID: ID
     message: String
+    newList: Wishlist
     ok: Boolean
 }
 
@@ -360,7 +360,7 @@ type Mutation {
     refreshTokens(refreshToken: String!, token: String!): RefreshToken
     rejectFriendRequest(fromUserId: ID!): RejectFriendRequest
     removeFromFriends(friendId: String!): RemoveFromFriends
-    removePictures(files: [Upload], itemId: ID!): AddPictures
+    removePictures(urls: [String]): RemovePictures
     resetPassword(email: String!): ResetPassword
     "Send request for friendhsip"
     sendFriendRequest(toUserId: ID!): SendFriendRequest
@@ -381,6 +381,8 @@ type PageInfo {
 }
 
 type Query {
+    "Return all wishlists of the user by his ID"
+    getAllUserLists(userId: ID!): [Wishlist]
     "Return group by ID"
     group(groupId: ID!): Group
     "All open items and wishlists of all users on this service"
@@ -419,6 +421,11 @@ type RemoveFromFriends {
     ok: Boolean
 }
 
+type RemovePictures {
+    message: String
+    ok: Boolean
+}
+
 type ResetPassword {
     message: String
     ok: Boolean
@@ -433,6 +440,7 @@ type SendFriendRequest {
 type SetGiverId {
     message: String
     ok: Boolean
+    user_: User
 }
 
 type UploadUserPicture {
