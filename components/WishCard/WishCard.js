@@ -16,6 +16,7 @@ import WantRange from "components/WishCard/WantRange";
 import WishEditModal from "components/WishCard/WishEditModal";
 import {EDIT_ITEM} from "graphql/wish/editItem";
 import getIDfromBase64 from "misc/func/getIDfromBase64";
+import {DELETE_ITEM} from "graphql/wish/deleteItem";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,7 +51,7 @@ const WishCard = ({wish, isPerformed = false, ...rest}) => {
             variables: {
                 itemId: wish.id
             }
-        })
+        }).then(() => rest.refetch())
     }
 
     const isGiver = rest.myId === wish.giverId
@@ -73,6 +74,16 @@ const WishCard = ({wish, isPerformed = false, ...rest}) => {
         })
     }
 
+    const [deleteItem] = useMutation(DELETE_ITEM)
+
+    const onDelete = () => {
+        deleteItem({
+            variables: {
+                itemId: getIDfromBase64(wish.id)
+            }
+        }).then(() => rest.refetch())
+    }
+
     const renderWishEditModal = <WishEditModal onClose={() => setIsEditModalOpen(false)} open={isEditModalOpen}
                                                onSubmit={onEdit}/>
 
@@ -83,7 +94,7 @@ const WishCard = ({wish, isPerformed = false, ...rest}) => {
             </IconButton>
         </Tooltip>
         <Tooltip title="Удалить">
-            <IconButton>
+            <IconButton onClick={onDelete}>
                 <Delete/>
             </IconButton>
         </Tooltip>
@@ -104,7 +115,7 @@ const WishCard = ({wish, isPerformed = false, ...rest}) => {
             </IconButton>
         </Tooltip>
         <Tooltip title={"Удалить"}>
-            <IconButton>
+            <IconButton onClick={onDelete}>
                 <Delete/>
             </IconButton>
         </Tooltip>
